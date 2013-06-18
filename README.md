@@ -27,6 +27,14 @@ Better:
 	}
 	?>
 
+Negate:
+
+	<?php
+	$bob->get('/user/!is_numeric', function($user) {
+		echo 'ID PLZ!';
+	});
+	?>
+
 Multiple request methods:
 
 	<?php

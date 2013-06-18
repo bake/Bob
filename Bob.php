@@ -1,7 +1,4 @@
 <?php
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', '1');
-
 class Bob {
 	private $url    = '';
 	private $method = '';
@@ -72,16 +69,4 @@ class Bob {
 		$this->add(['post'], $pattern, $callback);
 	}
 }
-
-$bob = new Bob();
-
-$bob->get(':is_numeric', function($id) {
-	echo 'num ('.$id.')';
-});
-
-$bob->get('!is_numeric', function($id) {
-	echo 'not num ('.$id.')';
-});
-
-$bob->go();
 ?>

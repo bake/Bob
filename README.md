@@ -1,44 +1,68 @@
 Bob
 ===
 
-Very basic routing class ...
-
-	<?php
-	$bob = new Bob();
-	?>
+Very basic routing class (about 80 lines) ...
 
 Add a route:
 
 	<?php
-	$bob->get('/user/bob', function() {
-		echo 'Hey, Bob!';
+	Bob::get('/', function() {
+		echo 'Hello World';
 	});
 	?>
 
-Better:
+A little bit more:
 
 	<?php
-	$bob->get('/user/:is_user', function($user) {
+	Bob::get('/user/bob', function() {
+		echo 'Hey, bob!';
+	});
+	?>
+
+Use a function:
+
+	<?php
+	Bob::get('/user/:is_numeric', function($id) {
+		echo 'Hello, '.$user[$id];
+	});
+	?>
+
+Use an own function:
+
+	<?php
+	Bob::get('/user/:is_user', function($user) {
 		echo 'Hey, '.$user.'!';
 	});
 
 	function is_user($user) {
-		return ($user == 'bob') ? true : false;
+		return in_array($user, [1, 2, 3]);
 	}
 	?>
 
 Negate:
 
 	<?php
-	$bob->get('/user/!is_numeric', function($user) {
-		echo 'ID PLZ!';
+	Bob::get('/user/:is_user', function($user) {
+		echo 'Hey, '.$user.'!';
+	});
+
+	Bob::get('/user/!is_user', function($user) {
+		echo 'Can\'t find this user :(';
 	});
 	?>
 
 Multiple request methods:
 
 	<?php
-	$bob->add(['post', 'put'], '/user/:is_user', function($user) {
-		// delete user
+	Bob::add(['post', 'put'], '/user', function() {
+		// Add a user! or something else! I don't care!
 	});
 	?>
+
+Execute:
+
+	<?php
+	Bob::go();
+	?>
+
+And ... you're done.

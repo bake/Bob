@@ -1,9 +1,4 @@
 <?php
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', '1');
-
-header('Content-Type: text/plain');
-
 class Bob {
 	private static $url    = '';
 	private static $method = '';
@@ -84,14 +79,4 @@ class Bob {
 		return false;
 	}
 }
-
-Bob::get('/', function() {
-	echo 'Hello World';
-});
-
-Bob::get('/test', function() {
-	echo 'test';
-});
-
-Bob::go();
 ?>

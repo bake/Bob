@@ -51,12 +51,12 @@ class Bob {
 			return false;
 	}
 
-	public static function go() {
-		static::$url    = static::url_elements($_SERVER['REQUEST_URI']);
-		static::$method = $_SERVER['REQUEST_METHOD'];
-
-		if(static::$url[0] == 'Bob_static.php')
-			array_shift(static::$url);
+	public static function go($base = '') {
+		static::$url    = $_SERVER['REQUEST_URI'];
+		static::$url    = str_ireplace($base, '', static::$url);
+		static::$url    = static::url_elements(static::$url);
+		static::$method = (isset($_GET['method'])) ? $_GET['method'] : $_SERVER['REQUEST_METHOD'];
+		static::$method = strtoupper(static::$method);
 
 		foreach(static::$routes as $route)
 			static::execute($route['methods'], $route['pattern'], $route['callback']);
@@ -79,4 +79,3 @@ class Bob {
 		return false;
 	}
 }
-?>

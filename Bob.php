@@ -23,6 +23,14 @@ class Bob {
 		static::add(['post'], $pattern, $callback);
 	}
 
+	public static function put($pattern, $callback) {
+		static::add(['put'], $pattern, $callback);
+	}
+
+	public static function delete($pattern, $callback) {
+		static::add(['delete'], $pattern, $callback);
+	}
+
 	private static function url_elements($url) {
 		$elements = explode('/', trim(str_replace('//', '/', $url), '/'));
 		$elements = static::trim_arr($elements);
@@ -53,6 +61,7 @@ class Bob {
 
 	public static function go($base = '') {
 		static::$url    = $_SERVER['REQUEST_URI'];
+		static::$url    = preg_replace('/[\?&]method=([a-zA-Z]+)/', '', static::$url);
 		static::$url    = str_ireplace($base, '', static::$url);
 		static::$url    = static::url_elements(static::$url);
 		static::$method = (isset($_GET['method'])) ? $_GET['method'] : $_SERVER['REQUEST_METHOD'];

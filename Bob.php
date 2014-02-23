@@ -1,8 +1,11 @@
 <?php
 class Bob {
-	private static $url    = '';
-	private static $method = '';
-	private static $routes = [];
+	private static $passed  = 0;
+	private static $refused = 0;
+	private static $url     = '';
+	private static $method  = '';
+	private static $routes  = [];
+	private static $gone    = false;
 
 	public static function add($methods, $pattern, $callback) {
 		$methods = (is_array($methods)) ? $methods : [$methods];
@@ -31,6 +34,10 @@ class Bob {
 		static::add(['delete'], $pattern, $callback);
 	}
 
+	public static function notfound($callback) {
+		if(static::$passed == 0) static::summary($callback);
+	}
+
 	private static function url_elements($url) {
 		$elements = explode('/', trim(str_replace('//', '/', $url), '/'));
 		$elements = static::trim_arr($elements);
@@ -38,25 +45,18 @@ class Bob {
 		return $elements;
 	}
 
-	/**
-	 * remove empty values
-	 */
 	private static function trim_arr($arr) {
 		return array_filter($arr, function($var) {
 			return !empty($var);
 		});
 	}
 
-	/**
-	 * look for a ":" or "!", says "yes" if the function exists
-	 */
 	private static function is_function($value, $function) {
 		if($function[0] == ':')
 			return function_exists(substr($function, 1)) and  call_user_func(substr($function, 1), $value);
 		else if($function[0] == '!')
 			return function_exists(substr($function, 1)) and !call_user_func(substr($function, 1), $value);
-		else
-			return false;
+		else return false;
 	}
 
 	public static function go($base = '') {
@@ -68,7 +68,11 @@ class Bob {
 		static::$method = strtoupper(static::$method);
 
 		foreach(static::$routes as $route)
-			static::execute($route['methods'], $route['pattern'], $route['callback']);
+			if(static::execute($route['methods'], $route['pattern'], $route['callback']))
+				static::$passed++;
+			else static::$refused++;
+
+		static::$gone = true;
 	}
 
 	private static function execute($methods, $pattern, $callback) {
@@ -83,8 +87,16 @@ class Bob {
 					return false;
 
 			call_user_func_array($callback, $arguments);
+			return true;
 		}
 
 		return false;
+	}
+
+	public static function summary($callback) {
+		if(static::$gone) call_user_func_array($callback, [
+			'passed'  => static::$passed,
+			'refused' => static::$refused
+		]);
 	}
 }

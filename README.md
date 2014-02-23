@@ -1,7 +1,7 @@
 Bob
 ===
 
-Very basic routing class (about 91 lines) ...
+Very basic routing class (about 102 lines) ...
 
 Add a route:
 
@@ -64,5 +64,17 @@ Or - if you'd like to work in a subdirectory - trim the request url:
 	Bob::go('/foo/bar.php');
 
 `http://localhost/foo/bar.php/user/1` `=>` `/user/1`
+
+404:
+
+	<?php
+	Bob::summary(function($passed, $refused) {
+		echo $passed.' routes passed, '.$refused.' were refused.'
+	});
+
+	// this will only execute the callback, if no rule matched the request
+	Bob::notfound(function($passed, $refused) {
+		echo '404 :(';
+	});
 
 You're done.

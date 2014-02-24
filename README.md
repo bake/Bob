@@ -69,7 +69,7 @@ Or - if you'd like to work in a subdirectory - trim the request url:
 
 	<?php
 	Bob::summary(function($passed, $refused) {
-		echo $passed.' routes passed, '.$refused.' were refused.'
+		echo $passed.' routes passed, '.$refused.' were refused.';
 	});
 
 	// this will only execute the callback, if no rule matched the request

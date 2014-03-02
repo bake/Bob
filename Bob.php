@@ -60,8 +60,7 @@ class Bob {
 	}
 
 	public static function go($base = '') {
-		static::$url    = $_SERVER['REQUEST_URI'];
-		static::$url    = preg_replace('/[\?&]method=([a-zA-Z]+)/', '', static::$url);
+		static::$url    = $_SERVER['PATH_INFO'];
 		static::$url    = str_ireplace($base, '', static::$url);
 		static::$url    = static::url_elements(static::$url);
 		static::$method = (isset($_GET['method'])) ? $_GET['method'] : $_SERVER['REQUEST_METHOD'];

@@ -7,31 +7,33 @@ class Bob {
 	private static $routes  = [];
 	private static $gone    = false;
 
-	public static function add($methods, $pattern, $callback) {
-		$methods = (is_array($methods)) ? $methods : [$methods];
-		$methods = array_map('strtoupper', $methods);
+	public static function add($methods, $patterns, $callback) {
+		$methods  = (is_array($methods)) ? $methods : [$methods];
+		$methods  = array_map('strtoupper', $methods);
+		$patterns = (is_array($patterns)) ? $patterns : [$patterns];
 
-		static::$routes[] = [
-			'methods'  => $methods,
-			'pattern'  => $pattern,
-			'callback' => $callback
-		];
+		foreach($patterns as $pattern)
+			static::$routes[] = [
+				'methods'  => $methods,
+				'pattern'  => $pattern,
+				'callback' => $callback
+			];
 	}
 
 	public static function get($pattern, $callback) {
-		static::add(['get'], $pattern, $callback);
+		static::add('get', $pattern, $callback);
 	}
 
 	public static function post($pattern, $callback) {
-		static::add(['post'], $pattern, $callback);
+		static::add('post', $pattern, $callback);
 	}
 
 	public static function put($pattern, $callback) {
-		static::add(['put'], $pattern, $callback);
+		static::add('put', $pattern, $callback);
 	}
 
 	public static function delete($pattern, $callback) {
-		static::add(['delete'], $pattern, $callback);
+		static::add('delete', $pattern, $callback);
 	}
 
 	public static function notfound($callback) {

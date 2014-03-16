@@ -1,12 +1,19 @@
 Bob
 ===
 
-Very basic routing class (about 102 lines) ...
+Very basic routing class (about 104 lines) ...
 
 Add a route:
 
 	<?php
 	Bob::get('/', function() {
+		echo 'Hello World';
+	});
+
+Add a bunch of routes:
+
+	<?php
+	Bob::get(['/', '/home'], function() {
 		echo 'Hello World';
 	});
 
@@ -72,7 +79,8 @@ Or - if you'd like to work in a subdirectory - trim the request url:
 		echo $passed.' routes passed, '.$refused.' were refused.';
 	});
 
-	// this will only execute the callback, if no rule matched the request
+This will only execute the callback, if no rule matched the request:
+
 	Bob::notfound(function($passed, $refused) {
 		echo '404 :(';
 	});

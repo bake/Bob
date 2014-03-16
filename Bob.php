@@ -7,33 +7,34 @@ class Bob {
 	private static $routes  = [];
 	private static $gone    = false;
 
-	public static function add($methods, $patterns, $callback) {
+	public static function add($methods, $patterns, $callbacks) {
 		$methods  = (is_array($methods)) ? $methods : [$methods];
 		$methods  = array_map('strtoupper', $methods);
 		$patterns = (is_array($patterns)) ? $patterns : [$patterns];
+		$callbacks  = (is_array($callbacks)) ? $callbacks : [$callbacks];
 
 		foreach($patterns as $pattern)
 			static::$routes[] = [
 				'methods'  => $methods,
 				'pattern'  => $pattern,
-				'callback' => $callback
+				'callback' => $callbacks
 			];
 	}
 
-	public static function get($pattern, $callback) {
-		static::add('get', $pattern, $callback);
+	public static function get($pattern, $callbacks) {
+		static::add('get', $pattern, $callbacks);
 	}
 
-	public static function post($pattern, $callback) {
-		static::add('post', $pattern, $callback);
+	public static function post($pattern, $callbacks) {
+		static::add('post', $pattern, $callbacks);
 	}
 
-	public static function put($pattern, $callback) {
-		static::add('put', $pattern, $callback);
+	public static function put($pattern, $callbacks) {
+		static::add('put', $pattern, $callbacks);
 	}
 
-	public static function delete($pattern, $callback) {
-		static::add('delete', $pattern, $callback);
+	public static function delete($pattern, $callbacks) {
+		static::add('delete', $pattern, $callbacks);
 	}
 
 	public static function notfound($callback) {
@@ -77,7 +78,7 @@ class Bob {
 		static::$gone = true;
 	}
 
-	private static function execute($methods, $pattern, $callback) {
+	private static function execute($methods, $pattern, $callbacks) {
 		$arguments = [];
 		$pattern   = static::url_elements($pattern);
 
@@ -88,7 +89,7 @@ class Bob {
 				else if($pattern[$i] != static::$url[$i])
 					return false;
 
-			call_user_func_array($callback, $arguments);
+			foreach($callbacks as $callback) { call_user_func_array($callback, $arguments); }
 			return true;
 		}
 

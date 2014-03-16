@@ -5,20 +5,13 @@ class Bob {
 	private static $url     = '';
 	private static $method  = '';
 	private static $routes  = [];
-	private static $gone    = false;
 
 	public static function add($methods, $patterns, $callbacks) {
-		$methods   = (is_array($methods)) ? $methods : [$methods];
-		$methods   = array_map('strtoupper', $methods);
-		$patterns  = (is_array($patterns)) ? $patterns : [$patterns];
-		$callbacks = (is_array($callbacks)) ? $callbacks : [$callbacks];
-
-		foreach($patterns as $pattern)
-			static::$routes[] = [
-				'methods'   => $methods,
-				'pattern'   => $pattern,
-				'callbacks' => $callbacks
-			];
+		static::$routes[] = [
+			'methods'   => array_map('strtoupper', (is_array($methods)) ? $methods : [$methods]),
+			'patterns'  => (is_array($patterns)) ? $patterns : [$patterns],
+			'callbacks' => (is_array($callbacks)) ? $callbacks : [$callbacks]
+		];
 	}
 
 	public static function get($pattern, $callbacks) {
@@ -70,12 +63,17 @@ class Bob {
 		static::$method = (isset($_GET['method'])) ? $_GET['method'] : $_SERVER['REQUEST_METHOD'];
 		static::$method = strtoupper(static::$method);
 
-		foreach(static::$routes as $route)
-			if(static::execute($route['methods'], $route['pattern'], $route['callbacks']))
-				static::$passed++;
-			else static::$refused++;
+		foreach(static::$routes as $route) {
+			$passed = $refused = false;
 
-		static::$gone = true;
+			foreach($route['patterns'] as $pattern)
+				if(static::execute($route['methods'], $pattern, $route['callbacks']))
+					$passed = true;
+				else $refused = true;
+
+			if($passed) static::$passed++;
+			if(!$passed and $refused) static::$refused++;
+		}
 	}
 
 	private static function execute($methods, $pattern, $callbacks) {
@@ -91,6 +89,7 @@ class Bob {
 
 			foreach($callbacks as $callback)
 				call_user_func_array($callback, $arguments);
+
 			return true;
 		}
 
@@ -98,7 +97,7 @@ class Bob {
 	}
 
 	public static function summary($callback) {
-		if(static::$gone) call_user_func_array($callback, [
+		call_user_func_array($callback, [
 			'passed'  => static::$passed,
 			'refused' => static::$refused
 		]);

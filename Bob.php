@@ -8,16 +8,16 @@ class Bob {
 	private static $gone    = false;
 
 	public static function add($methods, $patterns, $callbacks) {
-		$methods  = (is_array($methods)) ? $methods : [$methods];
-		$methods  = array_map('strtoupper', $methods);
-		$patterns = (is_array($patterns)) ? $patterns : [$patterns];
-		$callbacks  = (is_array($callbacks)) ? $callbacks : [$callbacks];
+		$methods   = (is_array($methods)) ? $methods : [$methods];
+		$methods   = array_map('strtoupper', $methods);
+		$patterns  = (is_array($patterns)) ? $patterns : [$patterns];
+		$callbacks = (is_array($callbacks)) ? $callbacks : [$callbacks];
 
 		foreach($patterns as $pattern)
 			static::$routes[] = [
-				'methods'  => $methods,
-				'pattern'  => $pattern,
-				'callback' => $callbacks
+				'methods'   => $methods,
+				'pattern'   => $pattern,
+				'callbacks' => $callbacks
 			];
 	}
 
@@ -71,7 +71,7 @@ class Bob {
 		static::$method = strtoupper(static::$method);
 
 		foreach(static::$routes as $route)
-			if(static::execute($route['methods'], $route['pattern'], $route['callback']))
+			if(static::execute($route['methods'], $route['pattern'], $route['callbacks']))
 				static::$passed++;
 			else static::$refused++;
 
@@ -89,7 +89,8 @@ class Bob {
 				else if($pattern[$i] != static::$url[$i])
 					return false;
 
-			foreach($callbacks as $callback) { call_user_func_array($callback, $arguments); }
+			foreach($callbacks as $callback)
+				call_user_func_array($callback, $arguments);
 			return true;
 		}
 

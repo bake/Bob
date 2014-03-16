@@ -1,7 +1,7 @@
 Bob
 ===
 
-Very basic routing class (about 104 lines) ...
+Very basic routing class (about 105 lines) ...
 
 Add a route:
 
@@ -30,6 +30,13 @@ Use a function:
 	Bob::get('/user/:is_numeric', function($id) {
 		echo 'Hello, '.$user[$id];
 	});
+	
+Use multiple functions:
+
+	<?php
+	Bob::get('/user/:is_numeric', [function($id) {
+		echo 'Hello, '.$user[$id];
+	}, count_login($id)]);
 
 Use an own function:
 

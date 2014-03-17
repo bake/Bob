@@ -58,7 +58,7 @@ Use an own function:
 	});
 
 	function is_user($user) {
-		return in_array($user, [1, 2, 3]);
+		return in_array($user, ['Justus', 'Peter', 'Bob']);
 	}
 
 Negate:

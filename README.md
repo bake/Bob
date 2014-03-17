@@ -3,17 +3,29 @@ Bob
 
 Very basic routing class (about 105 lines) ...
 
+tl;dr
+-----
+
+	<?php
+	Bob::get($pattern, $callback);
+
+is short for
+
+	<?php
+	Bob::add('get', $pattern, $callback);
+
+`$method` and `$pattern` can either be strings or an array of strings. `$callback`s require one or more functions.
+
+	<?php
+	Bob::go($file);
+
+Usage
+-----
+
 Add a route:
 
 	<?php
 	Bob::get('/', function() {
-		echo 'Hello World';
-	});
-
-Add a bunch of routes:
-
-	<?php
-	Bob::get(['/', '/home'], function() {
 		echo 'Hello World';
 	});
 
@@ -24,19 +36,19 @@ A little bit more:
 		echo 'Hey, bob!';
 	});
 
+Add a bunch of patterns:
+
+	<?php
+	Bob::get(['/', '/home'], function() {
+		echo 'Hello World';
+	});
+
 Use a function:
 
 	<?php
 	Bob::get('/user/:is_numeric', function($id) {
 		echo 'Hello, '.$user[$id];
 	});
-
-Use multiple functions:
-
-	<?php
-	Bob::get('/user/:is_numeric', [function($id) {
-		echo 'Hello, '.$user[$id];
-	}, count_login($id)]);
 
 Use an own function:
 
@@ -59,6 +71,13 @@ Negate:
 	Bob::get('/user/!is_user', function($user) {
 		echo 'Can\'t find this user :(';
 	});
+
+Use multiple callbacks:
+
+	<?php
+	Bob::get('/user/:is_numeric', [function($id) {
+		echo 'Hello, '.$user[$id];
+	}, count_login($id)]);
 
 Multiple request methods:
 
@@ -92,4 +111,4 @@ This will only execute the callback, if no rule matched the request:
 		echo '404 :(';
 	});
 
-You're done.
+You're done. Have a nice day.

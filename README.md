@@ -1,10 +1,8 @@
-Bob
-===
+# Bob
 
-Very basic routing class (about 105 lines) ...
+Very basic routing class (about 110 lines) ...
 
-tl;dr
------
+## tl;dr
 
 ```php
 <?php
@@ -25,8 +23,7 @@ Bob::add('get', $pattern, $callback);
 Bob::go($file);
 ```
 
-Usage
------
+## Usage
 
 Add a route:
 
@@ -87,6 +84,20 @@ Bob::get('/user/:is_user', function($user) {
 
 Bob::get('/user/!is_user', function($user) {
 	echo 'Can\'t find this user :(';
+});
+```
+
+You can also use regex (in the same way you'd use a function):
+
+```php
+<?php
+Bob::$patterns = [
+	'num' => '[0-9]+',
+	'all' => '.*'
+];
+
+Bob::get('/:num', function($id) {
+	echo $id;
 });
 ```
 

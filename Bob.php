@@ -1,10 +1,11 @@
 <?php
 class Bob {
-	private static $passed  = 0;
-	private static $refused = 0;
-	private static $url     = '';
-	private static $method  = '';
-	private static $routes  = [];
+	private static $passed   = 0;
+	private static $refused  = 0;
+	private static $url      = '';
+	private static $method   = '';
+	private static $routes   = [];
+	public  static $patterns = [];
 
 	public static function add($methods, $patterns, $callbacks) {
 		static::$routes[] = [
@@ -47,12 +48,16 @@ class Bob {
 		});
 	}
 
-	private static function is_function($value, $function) {
-		if($function[0] == ':')
-			return function_exists(substr($function, 1)) and  call_user_func(substr($function, 1), $value);
-		else if($function[0] == '!')
-			return function_exists(substr($function, 1)) and !call_user_func(substr($function, 1), $value);
-		else return false;
+	private static function is_parsable($value, $pattern) {
+		if(!in_array($pattern[0], [':', '!'])) return false;
+
+		if(isset(static::$patterns[substr($pattern, 1)]))
+			$return = (preg_match('#^'.static::$patterns[substr($pattern, 1)].'$#', $value) == 1);
+		else if(function_exists(substr($pattern, 1)))
+			$return = (call_user_func(substr($pattern, 1), $value));
+		else $return = false;
+
+		return ($pattern[0] == '!') ? !$return : $return;
 	}
 
 	public static function go($base = '') {
@@ -82,7 +87,7 @@ class Bob {
 
 		if(in_array(static::$method, $methods) and count($pattern) == count(static::$url)) {
 			for($i = 0; $i < count($pattern); $i++)
-				if(static::is_function(static::$url[$i], $pattern[$i]))
+				if(static::is_parsable(static::$url[$i], $pattern[$i]))
 					$arguments[] = static::$url[$i];
 				else if($pattern[$i] != static::$url[$i])
 					return false;

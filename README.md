@@ -5,21 +5,18 @@ Very basic routing class (about 110 lines) ...
 ## tl;dr
 
 ```php
-<?php
 Bob::get($pattern, $callback);
 ```
 
 is short for
 
 ```php
-<?php
 Bob::add('get', $pattern, $callback);
 ```
 
 `$method` and `$pattern` can either be strings or arrays of strings. `$callback`s require one or more functions.
 
 ```php
-<?php
 Bob::go($file);
 ```
 
@@ -28,7 +25,6 @@ Bob::go($file);
 Add a route:
 
 ```php
-<?php
 Bob::get('/', function() {
 	echo 'Hello World';
 });
@@ -37,7 +33,6 @@ Bob::get('/', function() {
 A little bit more:
 
 ```php
-<?php
 Bob::get('/user/bob', function() {
 	echo 'Hey, bob!';
 });
@@ -46,7 +41,6 @@ Bob::get('/user/bob', function() {
 Add a bunch of patterns:
 
 ```php
-<?php
 Bob::get(['/', '/home'], function() {
 	echo 'Hello World';
 });
@@ -55,7 +49,6 @@ Bob::get(['/', '/home'], function() {
 Use a function:
 
 ```php
-<?php
 Bob::get('/user/:is_numeric', function($id) {
 	echo 'Hello, '.$user[$id];
 });
@@ -64,7 +57,6 @@ Bob::get('/user/:is_numeric', function($id) {
 Use an own function:
 
 ```php
-<?php
 Bob::get('/user/:is_user', function($user) {
 	echo 'Hey, '.$user.'!';
 });
@@ -77,7 +69,6 @@ function is_user($user) {
 Negate:
 
 ```php
-<?php
 Bob::get('/user/:is_user', function($user) {
 	echo 'Hey, '.$user.'!';
 });
@@ -90,7 +81,6 @@ Bob::get('/user/!is_user', function($user) {
 You can also use regex (in the same way you'd use a function):
 
 ```php
-<?php
 Bob::$patterns = [
 	'num' => '[0-9]+',
 	'all' => '.*'
@@ -104,7 +94,6 @@ Bob::get('/:num', function($id) {
 Use multiple callbacks:
 
 ```php
-<?php
 Bob::get('/user/:is_numeric', [function($id) {
 	echo 'Hello, '.$user[$id];
 }, count_login($id)]);
@@ -113,7 +102,6 @@ Bob::get('/user/:is_numeric', [function($id) {
 Multiple request methods:
 
 ```php
-<?php
 Bob::add(['post', 'put'], '/user', function() {
 	// Add a user! Or something else! I don't care!
 });
@@ -122,14 +110,12 @@ Bob::add(['post', 'put'], '/user', function() {
 Execute:
 
 ```php
-<?php
 Bob::go();
 ```
 
 Or - if you'd like to work in a subdirectory - trim the request url:
 
 ```php
-<?php
 Bob::go('/foo/bar.php');
 ```
 
@@ -138,7 +124,6 @@ Bob::go('/foo/bar.php');
 404:
 
 ```php
-<?php
 Bob::summary(function($passed, $refused) {
 	echo $passed.' routes passed, '.$refused.' were refused.';
 });

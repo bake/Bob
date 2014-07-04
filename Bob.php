@@ -36,16 +36,7 @@ class Bob {
 	}
 
 	private static function url_elements($url) {
-		$elements = explode('/', trim(str_replace('//', '/', $url), '/'));
-		$elements = static::trim_arr($elements);
-
-		return $elements;
-	}
-
-	private static function trim_arr($arr) {
-		return array_filter($arr, function($var) {
-			return !empty($var);
-		});
+		return explode('/', preg_replace('#/+#', '/', $url));
 	}
 
 	private static function is_parsable($value, $pattern) {

@@ -1,6 +1,6 @@
 # Bob
 
-Very basic routing class (about 110 lines) ...
+Very basic routing class (about 101 lines) ...
 
 ## tl;dr
 

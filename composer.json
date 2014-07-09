@@ -1,0 +1,8 @@
+{
+	"name": "Bob",
+	"version": "0.1.0",
+	"description": "Very basic routing class",
+	"require": {
+		"php": ">=5.4.*"
+	}
+}

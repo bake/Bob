@@ -36,11 +36,11 @@ class Bob {
 	}
 
 	private static function url_elements($url) {
-		return explode('/', preg_replace('#/+#', '/', $url));
+		return explode('/', trim(preg_replace('#/+#', '/', $url), '/'));
 	}
 
 	private static function is_parsable($value, $pattern) {
-		if(!in_array($pattern[0], [':', '!'])) return false;
+		if(empty($pattern) or !in_array($pattern[0], [':', '!'])) return false;
 
 		if(isset(static::$patterns[substr($pattern, 1)]))
 			$return = (preg_match('#^'.static::$patterns[substr($pattern, 1)].'$#', $value) == 1);

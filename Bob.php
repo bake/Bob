@@ -84,9 +84,9 @@ class Bob {
 					return false;
 
 			foreach($callbacks as $callback)
-				if(class_exists($callback) && method_exists($callback, static::$method))
+				if(is_string($callback) and class_exists($callback) and method_exists($callback, static::$method))
 					call_user_func_array([$callback, static::$method], $arguments);
-				else if(in_array(static::$method, $methods) and function_exists($callback))
+				else if(in_array(static::$method, $methods) and is_callable($callback))
 					call_user_func_array($callback, $arguments);
 				else return false;
 

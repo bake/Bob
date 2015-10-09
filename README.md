@@ -14,7 +14,7 @@ is short for
 Bob::add('get', $pattern, $callback);
 ```
 
-`$method` and `$pattern` can either be strings or arrays of strings. `$callback`s are [one or more functions](#routes) or a [class](#a-class-as-callback).
+`$method` and `$pattern` can either be strings or arrays of strings. `$callback`s are [one](#routes) or [more functions](#callbacks) or a [class](#a-class-as-callback).
 
 ```php
 Bob::go($file);

@@ -1,6 +1,6 @@
 # Bob
 
-Very basic routing class ([about 105 lines](https://github.com/BakeRolls/Bob/blob/master/Bob.php)) ...
+Very basic routing class ([about 105 lines](https://github.com/BakeRolls/Bob/blob/master/Bob.php#L105)) ...
 
 ## tl;dr
 
@@ -14,7 +14,7 @@ is short for
 Bob::add('get', $pattern, $callback);
 ```
 
-`$method` and `$pattern` can either be strings or arrays of strings. `$callback`s are [one or more functions](#routes) or a [class](#aclassascallback).
+`$method` and `$pattern` can either be strings or arrays of strings. `$callback`s are [one or more functions](#routes) or a [class](#a-class-as-callback).
 
 ```php
 Bob::go($file);
@@ -137,7 +137,7 @@ Notice that you have to use `Bob::add()` with an empty array. In this case, you'
 
 ### Execute
 
-With the *use-an-own-function-example* from above, the ([second](#ifnothingwasfound)) final step could look like this:
+With the *use-an-own-function-example* from above, the ([second](#if-nothing-was-found)) final step could look like this:
 
 ```php
 Bob::go();

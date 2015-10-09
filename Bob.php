@@ -76,7 +76,7 @@ class Bob {
 		$arguments = [];
 		$pattern   = static::url_elements($pattern);
 
-		if(in_array(static::$method, $methods) and count($pattern) == count(static::$url)) {
+		if(count($pattern) == count(static::$url)) {
 			for($i = 0; $i < count($pattern); $i++)
 				if(static::is_parsable(static::$url[$i], $pattern[$i]))
 					$arguments[] = static::$url[$i];
@@ -84,7 +84,11 @@ class Bob {
 					return false;
 
 			foreach($callbacks as $callback)
-				call_user_func_array($callback, $arguments);
+				if(class_exists($callback) && method_exists($callback, static::$method))
+					call_user_func_array([$callback, static::$method], $arguments);
+				else if(in_array(static::$method, $methods) and function_exists($callback))
+					call_user_func_array($callback, $arguments);
+				else return false;
 
 			return true;
 		}

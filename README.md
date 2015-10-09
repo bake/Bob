@@ -1,6 +1,6 @@
 # Bob
 
-Very basic routing class (about 101 lines) ...
+Very basic routing class ([about 105 lines](https://github.com/BakeRolls/Bob/blob/master/Bob.php)) ...
 
 ## tl;dr
 
@@ -14,13 +14,15 @@ is short for
 Bob::add('get', $pattern, $callback);
 ```
 
-`$method` and `$pattern` can either be strings or arrays of strings. `$callback`s require one or more functions.
+`$method` and `$pattern` can either be strings or arrays of strings. `$callback`s are [one or more functions](#routes) or a [class](#aclassascallback).
 
 ```php
 Bob::go($file);
 ```
 
 ## Usage
+
+### Routes
 
 Add a route:
 
@@ -91,6 +93,8 @@ Bob::get('/:num', function($id) {
 });
 ```
 
+### Callbacks
+
 Use multiple callbacks:
 
 ```php
@@ -107,7 +111,33 @@ Bob::add(['post', 'put'], '/user', function() {
 });
 ```
 
-Execute:
+### A Class as Callback
+
+Your can also use a class as callback. Just pass its name. Bob will try to execute `$method` on `$callback`, so something like this will work:
+
+```php
+class SayHello {
+	static function get($num) {
+		for($i = 0; $i < $num; $i++)
+			echo 'GET Hello!';
+	}
+
+	static function post($num) {
+		for($i = 0; $i < $num; $i++)
+			echo 'POST Hello!';
+	}
+}
+```
+
+```php
+Bob::add([], '/:is_numeric', 'SayHello');
+```
+
+Notice that you have to use `Bob::add()` with an empty array. In this case, you're not required to tell Bob the accepted HTTP methods, it'll just look inside the provided class.
+
+### Execute
+
+With the *use-an-own-function-example* from above, the ([second](#ifnothingwasfound)) final step could look like this:
 
 ```php
 Bob::go();
@@ -120,6 +150,8 @@ Bob::go('/foo/bar.php');
 ```
 
 `http://localhost/foo/bar.php/user/1` `=>` `/user/1`
+
+### If nothing was found
 
 404:
 

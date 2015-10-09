@@ -1,6 +1,6 @@
 {
 	"name": "bake/bob",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Very basic routing class",
 	"require": {
 		"php": ">=5.4"

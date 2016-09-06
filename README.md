@@ -1,6 +1,6 @@
 # Bob
 
-Very basic routing class ([about 105 lines](https://github.com/BakeRolls/Bob/blob/master/Bob.php#L105)) ...
+Very basic routing class ([about 103 lines](https://github.com/BakeRolls/Bob/blob/master/Bob.php#L103)) ...
 
 ## tl;dr
 
